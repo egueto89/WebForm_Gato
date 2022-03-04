@@ -164,28 +164,28 @@ namespace WebGato
             string FichaMaquina = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
             try
             {
-                int[] ultMov = complementGato.clasePrincipal.MaquinaMovimientoFinal;
+                int[] ultMovimiento = complementGato.clasePrincipal.MaquinaMovimientoFinal;
 
-                if (ultMov[0] == 0 && ultMov[1] == 0)
+                if (ultMovimiento[0] == 0 && ultMovimiento[1] == 0)
                     btn_1.Text = FichaMaquina;
-                if (ultMov[0] == 0 && ultMov[1] == 1)
+                if (ultMovimiento[0] == 0 && ultMovimiento[1] == 1)
                     btn_2.Text = FichaMaquina;
-                if (ultMov[0] == 0 && ultMov[1] == 2)
+                if (ultMovimiento[0] == 0 && ultMovimiento[1] == 2)
                     btn_3.Text = FichaMaquina;
 
-                if (ultMov[0] == 1 && ultMov[1] == 0)
+                if (ultMovimiento[0] == 1 && ultMovimiento[1] == 0)
                     btn_6.Text = FichaMaquina;
-                if (ultMov[0] == 1 && ultMov[1] == 1)
+                if (ultMovimiento[0] == 1 && ultMovimiento[1] == 1)
                     btn_5.Text = FichaMaquina;
-                if (ultMov[0] == 1 && ultMov[1] == 2)
+                if (ultMovimiento[0] == 1 && ultMovimiento[1] == 2)
                     btn_4.Text = FichaMaquina;
 
 
-                if (ultMov[0] == 2 && ultMov[1] == 0)
+                if (ultMovimiento[0] == 2 && ultMovimiento[1] == 0)
                     btn_9.Text = FichaMaquina;
-                if (ultMov[0] == 2 && ultMov[1] == 1)
+                if (ultMovimiento[0] == 2 && ultMovimiento[1] == 1)
                     btn_8.Text = FichaMaquina;
-                if (ultMov[0] == 2 && ultMov[1] == 2)
+                if (ultMovimiento[0] == 2 && ultMovimiento[1] == 2)
                     btn_7.Text = FichaMaquina;
 
                 if (complementGato.jugadorGanoPartida == 0)

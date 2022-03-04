@@ -72,6 +72,14 @@ namespace Gato.BLL
             }
 
 
+            /*
+             Diagonales
+            areaJuego[0, 0] --boton 1     areaJuego[0, 0] --boton 3
+                     areaJuego[0, 0]   --boton 5  
+                              areaJuego[2, 2] --boton 7
+            areaJuego[0, 0] --boton 9
+             */
+
             return banderaposicion;
         }
 
@@ -108,7 +116,7 @@ namespace Gato.BLL
             {
                 int f = 0;
                 int c = 0;
-                int v = -1; //-99999999;
+                int v = -1;
                 int banderaposicion;
 
                 for (int i = 0; i < areaJuego.GetLength(0); i++)
@@ -145,7 +153,7 @@ namespace Gato.BLL
                     return 0;
             }
 
-            int v = -1;//-99999999;
+            int v = -1;
             int banderaposicion;
             for (int i = 0; i < areaJuego.GetLength(0); i++)
                 for (int j = 0; j < areaJuego.GetLength(1); j++)
@@ -172,7 +180,7 @@ namespace Gato.BLL
                     return 0;
             }
 
-            int v = 1;//99999999;
+            int v = 1;
             int banderaposicion;
             for (int i = 0; i < areaJuego.GetLength(0); i++)
                 for (int j = 0; j < areaJuego.GetLength(1); j++)
