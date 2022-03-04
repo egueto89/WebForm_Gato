@@ -118,7 +118,6 @@ namespace WebGato
                 {
 
                     mensaje("Seleccione la ficha con la que desea juegar");
-                    // mensaje a usuario.
                 }
             }
             catch (Exception ex)
