@@ -94,7 +94,7 @@ namespace WebGato
                 #region  Carga defecto elementos de la ventana
                 limpiarBotontesGato();
                 reinciarElementoMatriz();
-
+                habilitaDeshabilitaBotonesFicha();
                 #endregion
 
                 if (!string.IsNullOrEmpty(complementGato.FichaUsaUsuario))
@@ -140,9 +140,13 @@ namespace WebGato
                     complementGato.jugadorGanoPartida = complementGato.clasePrincipal.VerificaExisteGanador();
                     comprobarGanoPartida();
                     boton.Text = complementGato.FichaUsaUsuario;
-                    if (complementGato.jugadorGanoPartida != -1)
+                    if (complementGato.jugadorGanoPartida != -1 || complementGato.clasePrincipal.AreaDeJuegoLlena())
                     {
                         complementGato.FichaUsaUsuario = "";
+                        //quitamos la clase que pone la letra en rojo.
+                         btn_x.CssClass =
+                         btn_o.CssClass = "";
+                        habilitaDeshabilitaBotonesFicha();
                     }
 
                 }
@@ -157,44 +161,44 @@ namespace WebGato
 
         private void comprobarGanoPartida()
         {
+            string FichaMaquina = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
             try
             {
                 int[] ultMov = complementGato.clasePrincipal.MaquinaMovimientoFinal;
 
                 if (ultMov[0] == 0 && ultMov[1] == 0)
-                    btn_1.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_1.Text = FichaMaquina;
                 if (ultMov[0] == 0 && ultMov[1] == 1)
-                    btn_2.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_2.Text = FichaMaquina;
                 if (ultMov[0] == 0 && ultMov[1] == 2)
-                    btn_3.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_3.Text = FichaMaquina;
 
                 if (ultMov[0] == 1 && ultMov[1] == 0)
-                    btn_6.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_6.Text = FichaMaquina;
                 if (ultMov[0] == 1 && ultMov[1] == 1)
-                    btn_5.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_5.Text = FichaMaquina;
                 if (ultMov[0] == 1 && ultMov[1] == 2)
-                    btn_4.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_4.Text = FichaMaquina;
 
 
                 if (ultMov[0] == 2 && ultMov[1] == 0)
-                    btn_9.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_9.Text = FichaMaquina;
                 if (ultMov[0] == 2 && ultMov[1] == 1)
-                    btn_8.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_8.Text = FichaMaquina;
                 if (ultMov[0] == 2 && ultMov[1] == 2)
-                    btn_7.Text = complementGato.FichaUsaUsuario == "X" ? "O" : complementGato.FichaUsaUsuario == "O" ? "X" : "O";
+                    btn_7.Text = FichaMaquina;
 
                 if (complementGato.jugadorGanoPartida == 0)
-                { //gano
-                    mensaje("Felicidades ganaste la partida");
+                { //gano usuario
+                    mensaje($"Ganó el jugador  {complementGato.FichaUsaUsuario}");
                     deshabilitarBotones();
-
                 }
 
 
                 if (complementGato.jugadorGanoPartida == 1)
-                { //perdio
+                { //gano maquina
 
-                    mensaje("Has perdido la partida");
+                    mensaje($"Ganó el jugador {FichaMaquina}");
                     deshabilitarBotones();
                 }
 
@@ -211,10 +215,6 @@ namespace WebGato
 
                 mensaje($"Ocurrió un error al comprobarPartida {ex.Message}");
             }
-            
-
-           
-
 
         }
 
@@ -276,5 +276,21 @@ namespace WebGato
                 ClientScript.RegisterStartupScript(this.GetType(), "TimerScript", script);
             }
         }
+
+        private void habilitaDeshabilitaBotonesFicha()
+        {
+            if ((btn_x.CssClass== "fichaSeleccionada" || btn_o.CssClass == "fichaSeleccionada"))
+            {
+                btn_x.Enabled =
+                btn_o.Enabled = false;
+            }
+            else
+            {
+                btn_x.Enabled =
+                btn_o.Enabled = true;
+            }
+        }
+
+  
     }
 }

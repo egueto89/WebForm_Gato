@@ -108,7 +108,7 @@ namespace Gato.BLL
             {
                 int f = 0;
                 int c = 0;
-                int v = -99999999;
+                int v = -1; //-99999999;
                 int banderaposicion;
 
                 for (int i = 0; i < areaJuego.GetLength(0); i++)
@@ -145,7 +145,7 @@ namespace Gato.BLL
                     return 0;
             }
 
-            int v = -99999999;
+            int v = -1;//-99999999;
             int banderaposicion;
             for (int i = 0; i < areaJuego.GetLength(0); i++)
                 for (int j = 0; j < areaJuego.GetLength(1); j++)
@@ -172,7 +172,7 @@ namespace Gato.BLL
                     return 0;
             }
 
-            int v = 99999999;
+            int v = 1;//99999999;
             int banderaposicion;
             for (int i = 0; i < areaJuego.GetLength(0); i++)
                 for (int j = 0; j < areaJuego.GetLength(1); j++)
