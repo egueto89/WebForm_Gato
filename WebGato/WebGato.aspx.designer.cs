@@ -105,6 +105,15 @@ namespace WebGato
         protected global::System.Web.UI.WebControls.Button btn_7;
 
         /// <summary>
+        /// textSelect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label textSelect;
+
+        /// <summary>
         /// btn_x control.
         /// </summary>
         /// <remarks>
