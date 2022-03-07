@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ namespace Gato.BLL
         private int[,] areaJuego = new int[3, 3];
         private int jugadorGanoPartida = -1;
 
-        private int[] maquinaUltimoMovimiento = new int[3];
+        private int[] maquinaUltimoMovimiento = new int[2];
 
         public int[,] MatrizGato { get => areaJuego; set => areaJuego = value; }
         public int GanoPartida { get => jugadorGanoPartida; set => jugadorGanoPartida = value; }
@@ -23,10 +25,19 @@ namespace Gato.BLL
         /// </summary>
         public void InicioPartida()
         {
-            for (int i = 0; i < areaJuego.GetLength(0); i++)
-                for (int j = 0; j < areaJuego.GetLength(1); j++)
-                    areaJuego[i, j] = -1;
-            GanoPartida = -1;
+            try
+            {
+                for (int i = 0; i < areaJuego.GetLength(0); i++)
+                    for (int j = 0; j < areaJuego.GetLength(1); j++)
+                        areaJuego[i, j] = -1;
+                GanoPartida = -1;
+            }
+            catch (Exception ex)
+            {
+
+                registrarErrorLog(ex);
+            }
+            
         }
 
 
@@ -38,12 +49,21 @@ namespace Gato.BLL
         /// <param name="y"></param>
         public void LlenarPosicionJuego(int x, int y)
         {
-            if (x >= 0 && x < 3 && y >= 0 && y < 3 && areaJuego[x, y] == -1 && GanoPartida == -1)
+            try
             {
-                areaJuego[x, y] = 0;
-                GanoPartida = VerificaExisteGanador();
-                MovimientoMaquina();
+                if (x >= 0 && x < 3 && y >= 0 && y < 3 && areaJuego[x, y] == -1 && GanoPartida == -1)
+                {
+                    areaJuego[x, y] = 0;
+                    GanoPartida = VerificaExisteGanador();
+                    MovimientoMaquina();
+                }
             }
+            catch (Exception ex)
+            {
+
+                registrarErrorLog(ex);
+            }
+            
         }
 
         /// <summary>
@@ -53,32 +73,40 @@ namespace Gato.BLL
         public int VerificaExisteGanador()
         {
             int banderaposicion = -1;
-
-            //Diagonales
-            if (areaJuego[0, 0] != -1 && areaJuego[0, 0] == areaJuego[1, 1] && areaJuego[0, 0] == areaJuego[2, 2])
-                banderaposicion = areaJuego[0, 0];
-
-            if (areaJuego[0, 2] != -1 && areaJuego[0, 2] == areaJuego[1, 1] && areaJuego[0, 2] == areaJuego[2, 0])
-                banderaposicion = areaJuego[0, 2];
-
-            //horizontal y vertical
-            for (int i = 0; i < areaJuego.GetLength(0); i++)
+            try
             {
-                if (areaJuego[i, 0] != -1 && areaJuego[i, 0] == areaJuego[i, 1] && areaJuego[i, 0] == areaJuego[i, 2])
-                    banderaposicion = areaJuego[i, 0];
+                //Diagonales
+                if (areaJuego[0, 0] != -1 && areaJuego[0, 0] == areaJuego[1, 1] && areaJuego[0, 0] == areaJuego[2, 2])
+                    banderaposicion = areaJuego[0, 0];
 
-                if (areaJuego[0, i] != -1 && areaJuego[0, i] == areaJuego[1, i] && areaJuego[0, i] == areaJuego[2, i])
-                    banderaposicion = areaJuego[0, i];
+                if (areaJuego[0, 2] != -1 && areaJuego[0, 2] == areaJuego[1, 1] && areaJuego[0, 2] == areaJuego[2, 0])
+                    banderaposicion = areaJuego[0, 2];
+
+                //horizontal y vertical
+                for (int i = 0; i < areaJuego.GetLength(0); i++)
+                {
+                    if (areaJuego[i, 0] != -1 && areaJuego[i, 0] == areaJuego[i, 1] && areaJuego[i, 0] == areaJuego[i, 2])
+                        banderaposicion = areaJuego[i, 0];
+
+                    if (areaJuego[0, i] != -1 && areaJuego[0, i] == areaJuego[1, i] && areaJuego[0, i] == areaJuego[2, i])
+                        banderaposicion = areaJuego[0, i];
+                }
+
+
+                /*
+                 Diagonales
+                areaJuego[0, 0] --boton 1     areaJuego[0, 0] --boton 3
+                         areaJuego[0, 0]   --boton 5  
+                                  areaJuego[2, 2] --boton 7
+                areaJuego[0, 0] --boton 9
+                 */
             }
+            catch (Exception ex)
+            {
 
-
-            /*
-             Diagonales
-            areaJuego[0, 0] --boton 1     areaJuego[0, 0] --boton 3
-                     areaJuego[0, 0]   --boton 5  
-                              areaJuego[2, 2] --boton 7
-            areaJuego[0, 0] --boton 9
-             */
+                registrarErrorLog(ex);
+            }
+      
 
             return banderaposicion;
         }
@@ -90,10 +118,19 @@ namespace Gato.BLL
         public bool AreaDeJuegoLlena()
         {
             bool areaLlena = true;
-            for (int i = 0; i < areaJuego.GetLength(0); i++)
-                for (int j = 0; j < areaJuego.GetLength(1); j++)
-                    if (areaJuego[i, j] == -1)
-                        areaLlena = false;
+            try
+            {
+                for (int i = 0; i < areaJuego.GetLength(0); i++)
+                    for (int j = 0; j < areaJuego.GetLength(1); j++)
+                        if (areaJuego[i, j] == -1)
+                            areaLlena = false;
+            }
+            catch (Exception ex)
+            {
+
+                registrarErrorLog(ex);
+            }
+
 
 
             return areaLlena;
@@ -112,32 +149,42 @@ namespace Gato.BLL
         public void MovimientoMaquina()
         {
 
-            if (!TerminarJuego())
+            try
             {
-                int f = 0;
-                int c = 0;
-                int v = -1;
-                int banderaposicion;
+                if (!TerminarJuego())
+                {
+                    int f = 0;
+                    int c = 0;
+                    int v = -1;
+                    int banderaposicion;
 
-                for (int i = 0; i < areaJuego.GetLength(0); i++)
-                    for (int j = 0; j < areaJuego.GetLength(1); j++)
-                        if (areaJuego[i, j] == -1)
-                        {
-                            areaJuego[i, j] = 1;
-                            banderaposicion = MovimientoMinimo();
-                            if (banderaposicion > v)
+                    for (int i = 0; i < areaJuego.GetLength(0); i++)
+                        for (int j = 0; j < areaJuego.GetLength(1); j++)
+                            if (areaJuego[i, j] == -1)
                             {
-                                v = banderaposicion;
-                                f = i;
-                                c = j;
-                            }
+                                areaJuego[i, j] = 1;
+                                banderaposicion = MovimientoMinimo();
+                                if (banderaposicion > v)
+                                {
+                                    v = banderaposicion;
+                                    f = i;
+                                    c = j;
+                                }
 
-                            areaJuego[i, j] = -1;
-                        }
-                areaJuego[f, c] = 1;
-                maquinaUltimoMovimiento[0] = f;
-                maquinaUltimoMovimiento[1] = c;
+                                areaJuego[i, j] = -1;
+                            }
+                    areaJuego[f, c] = 1;
+                    maquinaUltimoMovimiento[0] = f;
+                    maquinaUltimoMovimiento[1] = c;
+                }
             }
+            catch (Exception ex)
+            {
+
+                registrarErrorLog(ex);
+            }
+
+
 
 
         }
@@ -145,56 +192,106 @@ namespace Gato.BLL
 
         private int MovimientoMaximo()
         {
-            if (TerminarJuego())
-            {
-                if (VerificaExisteGanador() != -1)
-                    return -1;
-                else
-                    return 0;
-            }
-
             int v = -1;
             int banderaposicion;
-            for (int i = 0; i < areaJuego.GetLength(0); i++)
-                for (int j = 0; j < areaJuego.GetLength(1); j++)
-                    if (areaJuego[i, j] == -1)
-                    {
-                        areaJuego[i, j] = 1;
-                        banderaposicion = MovimientoMinimo();
-                        if (banderaposicion > v)
-                            v = banderaposicion;
+            try
+            {
+                if (TerminarJuego())
+                {
+                    if (VerificaExisteGanador() != -1)
+                        return -1;
+                    else
+                        return 0;
+                } 
+                for (int i = 0; i < areaJuego.GetLength(0); i++)
+                    for (int j = 0; j < areaJuego.GetLength(1); j++)
+                        if (areaJuego[i, j] == -1)
+                        {
+                            areaJuego[i, j] = 1;
+                            banderaposicion = MovimientoMinimo();
+                            if (banderaposicion > v)
+                                v = banderaposicion;
 
-                        areaJuego[i, j] = -1;
-                    }
+                            areaJuego[i, j] = -1;
+                        }
+            }
+            catch (Exception ex)
+            {
+
+                registrarErrorLog(ex);
+            }
+
+            
 
             return v;
         }
 
         private int MovimientoMinimo()
         {
-            if (TerminarJuego())
-            {
-                if (VerificaExisteGanador() != -1)
-                    return 1;
-                else
-                    return 0;
-            }
-
             int v = 1;
             int banderaposicion;
-            for (int i = 0; i < areaJuego.GetLength(0); i++)
-                for (int j = 0; j < areaJuego.GetLength(1); j++)
-                    if (areaJuego[i, j] == -1)
-                    {
-                        areaJuego[i, j] = 0;
-                        banderaposicion = MovimientoMaximo();
-                        if (banderaposicion < v)
-                            v = banderaposicion;
+            try
+            {
+                if (TerminarJuego())
+                {
+                    if (VerificaExisteGanador() != -1)
+                        return 1;
+                    else
+                        return 0;
+                }
 
-                        areaJuego[i, j] = -1;
-                    }
+                for (int i = 0; i < areaJuego.GetLength(0); i++)
+                    for (int j = 0; j < areaJuego.GetLength(1); j++)
+                        if (areaJuego[i, j] == -1)
+                        {
+                            areaJuego[i, j] = 0;
+                            banderaposicion = MovimientoMaximo();
+                            if (banderaposicion < v)
+                                v = banderaposicion;
+
+                            areaJuego[i, j] = -1;
+                        }
+            }
+            catch (Exception ex)
+            {
+
+                registrarErrorLog(ex);
+            }
+            
 
             return v;
         }
+
+
+
+        public void registrarErrorLog( Exception e)
+        {
+            StringBuilder sb = new StringBuilder();
+            string path = !string.IsNullOrEmpty(ConfigurationManager.AppSettings["RutaLog"]) ? ConfigurationManager.AppSettings["RutaLog"] :
+                           @"C:\GatoError\";
+            try
+            {
+                sb.Append("Ocurrió el siguiente error ");
+                sb.Append(e);
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                
+               
+                using (StreamWriter log = new StreamWriter(path + $"LogGato{DateTime.Now.ToString("yyyMMdd")}.txt",true))
+                {
+                    log.WriteLine(sb.ToString());
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                // no se hace nada.
+            }
+        }
+
     }
 }

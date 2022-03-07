@@ -92,9 +92,11 @@ namespace WebGato
             try
             {
                 #region  Carga defecto elementos de la ventana
+
                 limpiarBotontesGato();
                 reinciarElementoMatriz();
                 habilitaDeshabilitaBotonesFicha();
+
                 #endregion
 
                 if (!string.IsNullOrEmpty(complementGato.FichaUsaUsuario))
@@ -154,7 +156,16 @@ namespace WebGato
             catch (Exception ex)
             {
 
-                mensaje($"Ocurrió un error {ex.Message}");
+                mensaje($"Ocurrió un error, se reinciar para volverlo a intentar");
+                complementGato.clasePrincipal.registrarErrorLog(ex);
+                reinciarElementoMatriz();
+                limpiarBotontesGato();
+                complementGato.FichaUsaUsuario = "";
+                //quitamos la clase que pone la letra en rojo.
+                btn_x.CssClass =
+                btn_o.CssClass = "";
+                deshabilitarBotones();
+
             }
 
         }
