@@ -95,10 +95,13 @@ namespace Gato.BLL
 
                 /*
                  Diagonales
-                areaJuego[0, 0] --boton 1     areaJuego[0, 0] --boton 3
-                         areaJuego[0, 0]   --boton 5  
-                                  areaJuego[2, 2] --boton 7
-                areaJuego[0, 0] --boton 9
+                                                areaJuego[0, 2] --boton 3
+                  areaJuego[0, 0] --boton 1     
+                                 areaJuego[1, 1]   --boton 5  
+                                            
+                                    areaJuego[2, 2] --boton 7
+
+                areaJuego[2, 0] --boton 9
                  */
             }
             catch (Exception ex)
@@ -261,8 +264,6 @@ namespace Gato.BLL
 
             return v;
         }
-
-
 
         public void registrarErrorLog( Exception e)
         {
